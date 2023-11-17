@@ -105,24 +105,41 @@ public class FlappyBird implements ActionListener
                     addColumn(false);
                 }
             }
-            
-
         }
 
         bird.y+=yMotion;
+
         for(Rectangle column:columns)
         {
             if(column.intersects(bird))
             {
                 gameOver=true;
+                if(bird.x <=column.x)
+                {
+                    bird.x=column.x-bird.width;
+                }
+                else
+                {  
+                    if(column.y !=0)
+                    {
+                        bird.y=column.y-bird.height;
+                    }
+                    else if(bird.y<column.height)
+                    {
+                        bird.y=column.height;
+                    }
+                }
+
             }
+        }
             if(bird.y> height-120 || bird.y<0)
             {
                 gameOver=true;
             }
-        }
-        }
-        renderer.repaint();
+        
+            
+    }
+    renderer.repaint();  
     }
 
     public void repaint(Graphics g) 
@@ -147,6 +164,7 @@ public class FlappyBird implements ActionListener
         g.setFont(new Font("Arial",1,100));
         if(gameOver)
         {
+            g.drawString("game over", 75, height/2-50);
 
         }
 

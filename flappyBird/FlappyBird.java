@@ -2,7 +2,6 @@ package flappyBird;
 
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -22,11 +21,12 @@ public class FlappyBird implements ActionListener
     public Rectangle bird;
     public ArrayList<Rectangle>columns;
     public Random rand;
-    public int ticks, yMotion;
+    public int ticks, yMotion, score;
     public Boolean gameOver, started;
 
 
-    public FlappyBird(){      // constructor
+    public FlappyBird() // constructor
+    {
         
         JFrame jframe= new JFrame();
         Timer timer= new Timer(20, this);
@@ -77,26 +77,61 @@ public class FlappyBird implements ActionListener
         g.fillRect(column.x, column.y, column.width, column.height);
     }
 
+    public void jump()
+	{
+		if (gameOver)
+		{
+			bird = new Rectangle(WIDTH / 2 - 10, HEIGHT / 2 - 10, 20, 20);
+			columns.clear();
+			yMotion = 0;
+			score = 0;
+
+			addColumn(true);
+			addColumn(true);
+			addColumn(true);
+			addColumn(true);
+
+			gameOver = false;
+		}
+
+		if (!started)
+		{
+			started = true;
+		}
+		else if (!gameOver)
+		{
+			if (yMotion > 0)
+			{
+				yMotion = 0;
+			}
+
+			yMotion -= 10;
+		}
+	}
+
     @Override
     public void actionPerformed(ActionEvent e)
     {
         int speed=10;
         ticks++;
-        if(started)
-        {
+    if(started)
+    {
         for(int i=0; i< columns.size(); i++)
         {
             Rectangle column=columns.get(i);
             column.x -= speed;
 
         }
+
         if(ticks%2==0 && yMotion<15)
         {
             yMotion+= 2;
         }
+
         for(int i=0; i< columns.size(); i++)
         {
             Rectangle column=columns.get(i);
+
             if (column.x + column.width <0)
             {
                 columns.remove(column);
@@ -111,6 +146,10 @@ public class FlappyBird implements ActionListener
 
         for(Rectangle column:columns)
         {
+            if (column.y == 0 && bird.x + bird.width / 2 > column.x + column.width / 2 - 10 && bird.x + bird.width / 2 < column.x + column.width / 2 + 10)
+				{
+                    score++;
+                }
             if(column.intersects(bird))
             {
                 gameOver=true;
@@ -119,7 +158,7 @@ public class FlappyBird implements ActionListener
                     bird.x=column.x-bird.width;
                 }
                 else
-                {  
+                {
                     if(column.y !=0)
                     {
                         bird.y=column.y-bird.height;
@@ -136,37 +175,51 @@ public class FlappyBird implements ActionListener
             {
                 gameOver=true;
             }
+
+            if(bird.y+yMotion>=height-120)
+            {
+                bird.y=height-120-bird.height;
+                gameOver=true;
+            }
         
             
     }
-    renderer.repaint();  
+    renderer.repaint();
     }
 
-    public void repaint(Graphics g) 
+    public void repaint(Graphics g)
     {
         g.setColor(Color.cyan.darker());
         g.fillRect(0, 0, width, height);
 
         g.setColor(Color.orange);
-        g.fillRect(0, height-150, width,150);
+        g.fillRect(0, height-120, width,150);
 
-        //g.setColor(Color.green.darker());
-        //g.fillRect(0, height-120, width, 20);
+        g.setColor(Color.green.darker());
+        g.fillRect(0, height-120, width, 20);
 
         g.setColor(Color.yellow);
         g.fillRect(bird.x, bird.y, bird.width, bird.height);
 
-        for (Rectangle column: columns)
+/*        for (Rectangle column: columns)
         {
             paintColumn(g, column);
         }
         g.setColor(Color.white);
         g.setFont(new Font("Arial",1,100));
+
+         if(!started)
+        {
+            g.drawString("click to start", 75, height/2-50);
+        }
         if(gameOver)
         {
             g.drawString("game over", 75, height/2-50);
-
         }
+        if(!gameOver && started)
+        {
+            g.drawString(String.valueOf(score), width/2, 100);
+        }*/
 
         
     }

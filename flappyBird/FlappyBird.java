@@ -73,7 +73,7 @@ public class FlappyBird implements ActionListener
 
     public void paintColumn(Graphics g, Rectangle column)
     {
-        g.setColor(Color.green.darker());
+        g.setColor(Color.red);
         g.fillRect(column.x, column.y, column.width, column.height);
     }
 
@@ -122,6 +122,8 @@ public class FlappyBird implements ActionListener
             column.x -= speed;
 
         }
+
+        bird.y+= yMotion;
 
         if(ticks%2==0 && yMotion<15)
         {
@@ -189,10 +191,10 @@ public class FlappyBird implements ActionListener
 
     public void repaint(Graphics g)
     {
-        g.setColor(Color.cyan.darker());
+        g.setColor(Color.black);
         g.fillRect(0, 0, width, height);
 
-        g.setColor(Color.orange);
+        g.setColor(Color.green);
         g.fillRect(0, height-120, width,150);
 
         g.setColor(Color.green.darker());
@@ -208,7 +210,7 @@ public class FlappyBird implements ActionListener
         g.setColor(Color.white);
         g.setFont(new Font("Arial",1,100));
 
-         if(!started)
+        if(!started)
         {
             g.drawString("click to start", 75, height/2-50);
         }

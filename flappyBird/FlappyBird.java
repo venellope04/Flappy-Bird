@@ -6,11 +6,14 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.Timer;
+
+import org.w3c.dom.events.MouseEvent;
 
 public class FlappyBird implements ActionListener
 {
@@ -22,7 +25,9 @@ public class FlappyBird implements ActionListener
     public ArrayList<Rectangle>columns;
     public Random rand;
     public int ticks, yMotion, score;
-    public Boolean gameOver, started;
+    public Boolean gameOver;
+    public boolean started=false;
+    
 
 
     public FlappyBird() // constructor
@@ -39,6 +44,7 @@ public class FlappyBird implements ActionListener
         jframe.setSize(width, height);
         jframe.setVisible(true);
         jframe.setResizable(false);
+
         bird= new Rectangle(width/2-10 , height /2-10, 20,20);
         columns= new ArrayList<Rectangle>();
         rand= new Random();
@@ -52,7 +58,7 @@ public class FlappyBird implements ActionListener
         timer.start();
     }
 
-    public void addColumn(boolean start)
+    public void addColumn(boolean start) //columns
     {
         int space=300;
         int columnWidth=100;
@@ -64,8 +70,8 @@ public class FlappyBird implements ActionListener
         }
         else
         {
-        columns.add(new Rectangle(columns.get(columns.size()-1).x +600,height-columnHeight,columnWidth,columnHeight));
-        columns.add(new Rectangle(columns.get(columns.size()-2).x, 0, columnWidth ,height-columnHeight-space));
+        columns.add(new Rectangle(columns.get(columns.size()-1).x + 600,height-columnHeight-120,columnWidth,columnHeight));
+        columns.add(new Rectangle(columns.get(columns.size()-1).x, 0, columnWidth ,height-columnHeight-space));
 
         }
 
@@ -76,12 +82,12 @@ public class FlappyBird implements ActionListener
         g.setColor(Color.red);
         g.fillRect(column.x, column.y, column.width, column.height);
     }
-
+ 
     public void jump()
 	{
 		if (gameOver)
 		{
-			bird = new Rectangle(WIDTH / 2 - 10, HEIGHT / 2 - 10, 20, 20);
+			bird = new Rectangle(width / 2 - 10, height / 2 - 10, 20, 20);
 			columns.clear();
 			yMotion = 0;
 			score = 0;
@@ -114,16 +120,13 @@ public class FlappyBird implements ActionListener
     {
         int speed=10;
         ticks++;
-    if(started)
-    {
-        for(int i=0; i< columns.size(); i++)
+   
+        for(int i=0; i< columns.size(); i++) //iterator for columns
         {
             Rectangle column=columns.get(i);
             column.x -= speed;
 
         }
-
-        bird.y+= yMotion;
 
         if(ticks%2==0 && yMotion<15)
         {
@@ -146,7 +149,7 @@ public class FlappyBird implements ActionListener
 
         bird.y+=yMotion;
 
-        for(Rectangle column:columns)
+       /*  for(Rectangle column:columns)
         {
             if (column.y == 0 && bird.x + bird.width / 2 > column.x + column.width / 2 - 10 && bird.x + bird.width / 2 < column.x + column.width / 2 + 10)
 				{
@@ -183,9 +186,7 @@ public class FlappyBird implements ActionListener
                 bird.y=height-120-bird.height;
                 gameOver=true;
             }
-        
-            
-    }
+    }*/
     renderer.repaint();
     }
 
@@ -203,11 +204,11 @@ public class FlappyBird implements ActionListener
         g.setColor(Color.yellow);
         g.fillRect(bird.x, bird.y, bird.width, bird.height);
 
-/*        for (Rectangle column: columns)
+       for (Rectangle column: columns) //paint columns
         {
             paintColumn(g, column);
         }
-        g.setColor(Color.white);
+       /*  g.setColor(Color.white);
         g.setFont(new Font("Arial",1,100));
 
         if(!started)
@@ -228,9 +229,21 @@ public class FlappyBird implements ActionListener
     public static void main(String args[])
     {
         flappyBird= new FlappyBird();
-        
-    
 
     }
-    
+    @Override
+    public void mouseCLicked(MouseEvent e)
+    {
+        jump();
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e)
+
+    {
+        if(e.getKeyCode()== KeyEvent.VK_SPACE)
+        {
+            jump();
+        }
+    }
 }

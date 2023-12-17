@@ -6,13 +6,15 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
-public class FlappyBird implements ActionListener
+public class FlappyBird implements ActionListener, MouseListener
 {
     //variables
     public static FlappyBird flappyBird;
@@ -41,6 +43,7 @@ public class FlappyBird implements ActionListener
         jframe.setSize(width, height);
         jframe.setVisible(true);
         jframe.setResizable(false);
+        jframe.addMouseListener(this);
 
         bird= new Rectangle(width/2-10 , height /2-10, 20,20);
         columns= new ArrayList<Rectangle>();
@@ -80,7 +83,7 @@ public class FlappyBird implements ActionListener
         g.fillRect(column.x, column.y, column.width, column.height);
     }
  
-  /*  public void jump()
+    public void jump()
 	{
 		if (gameOver)
 		{
@@ -110,12 +113,11 @@ public class FlappyBird implements ActionListener
 
 			yMotion -= 10;
 		}
-	} */
+	} 
 
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        started=true;
         int speed=10;
         ticks++;
         
@@ -151,16 +153,16 @@ public class FlappyBird implements ActionListener
 
       for(Rectangle column:columns)
         {
-            if (column.y == 0 && bird.x + bird.width / 2 > column.x + column.width / 2 - 10 && bird.x + bird.width / 2 < column.x + column.width / 2 + 10)
+            if (column.y == 0 && bird.x + bird.width / 2 > column.x + column.width / 2 - 10 && bird.x + bird.width / 2 < column.x + column.width / 2 + 10) //set score
 				{
                     score++;
                 }
             if(column.intersects(bird))
             {
                 gameOver=true;
-                break;
-            }
-             /*   if(bird.x <=column.x)
+                
+            
+                if(bird.x <=column.x)
                 {
                     bird.x=column.x-bird.width;
                 }
@@ -174,9 +176,9 @@ public class FlappyBird implements ActionListener
                     {
                         bird.y=column.height;
                     }
-                }
+                }    
 
-            }*/
+            }
         }
             if(bird.y> height-120 || bird.y<0)
             {
@@ -220,11 +222,11 @@ public class FlappyBird implements ActionListener
         }
         if(gameOver)
         {
-            g.drawString("game over", 75, height/2-50);
+            g.drawString("game over", 100, height/2-50);
         }
         if(!gameOver && started)
         {
-            g.drawString(String.valueOf(score), width/2, 100);
+            g.drawString(String.valueOf(score), width/2-25, 100);
         }
 
         
@@ -233,6 +235,11 @@ public class FlappyBird implements ActionListener
     {
         flappyBird= new FlappyBird();
 
+    }
+    @Override
+    public void mouseClicked(MouseEvent e)
+    {
+        jump();
     }
     
 }

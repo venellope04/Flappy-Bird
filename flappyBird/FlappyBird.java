@@ -18,7 +18,7 @@ public class FlappyBird implements ActionListener, MouseListener
 {
     //variables
     public static FlappyBird flappyBird;
-    public final int width=800, height=800;
+    public final int width=500, height=800;
     public Renderer renderer;
     public Rectangle bird;
     public ArrayList<Rectangle>columns;
@@ -85,7 +85,7 @@ public class FlappyBird implements ActionListener, MouseListener
  
     public void jump()
 	{
-		if (gameOver)
+		if (gameOver)     //click start
 		{
 			bird = new Rectangle(width / 2 - 10, height / 2 - 10, 20, 20);
 			columns.clear();
@@ -106,7 +106,7 @@ public class FlappyBird implements ActionListener, MouseListener
 		}
 		else if (!gameOver)
 		{
-			if (yMotion > 0)
+			if (yMotion > 0)   //click for jump
 			{
 				yMotion = 0;
 			}
@@ -242,4 +242,24 @@ public class FlappyBird implements ActionListener, MouseListener
         jump();
     }
     
+    @Override
+	public void mousePressed(MouseEvent e)
+    {
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e)
+	{
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e)
+	{
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e)
+	{
+	}
+
 }

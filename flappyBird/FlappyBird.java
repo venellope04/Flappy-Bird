@@ -18,7 +18,7 @@ public class FlappyBird implements ActionListener, MouseListener
 {
     //variables
     public static FlappyBird flappyBird;
-    public final int width=500, height=800;
+    public final int width=800, height=800;
     public Renderer renderer;
     public Rectangle bird;
     public ArrayList<Rectangle>columns;
@@ -79,7 +79,11 @@ public class FlappyBird implements ActionListener, MouseListener
 
     public void paintColumn(Graphics g, Rectangle column)
     {
-        g.setColor(Color.red);
+        int red =139 ;
+        int green = 0;
+        int blue = 0;
+        Color customColor = new Color(red, green, blue);
+        g.setColor(customColor);
         g.fillRect(column.x, column.y, column.width, column.height);
     }
  
